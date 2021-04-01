@@ -1,0 +1,87 @@
+BROKER SCHEMA soap.emp
+
+DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE emp NAMESPACE 'http://tempuri.org/Emplyess_Message_set';
+
+CREATE COMPUTE MODULE EmployeeFlow_Copy_input
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		set Environment.Variables.Input = InputRoot.SOAP.Body;
+		
+		
+		RETURN TRUE;
+	END;
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE EmployeeFlow_inset_and_respond
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		declare randnum integer RAND()*1000000*15;
+		declare inref reference to InputRoot.SOAP.Body.emp:AddEmployeeRequest;
+		create field OutputRoot.DFDL.Emplyees.EmpDetails;
+		declare outref reference to OutputRoot.DFDL.Emplyees.EmpDetails;
+		set outref.EmpId = randnum;
+		set outref.Fname = inref.emp:FirstName;
+		set outref.Lname = inref.emp:LastName;
+		set outref.Age = inref.emp:Age;
+		set outref.postalCode = inref.emp:Address.emp:PostalCode;
+		set outref."B.O_Box" = inref.emp:Address.emp:"B.O_Box";
+		set outref.street = inref.emp:Address.emp:street_name;
+		set outref.buildingNumber = inref.emp:Address.emp:BuildingNumber;
+		set outref.pPhone = inref.emp:Address.emp:Phone.emp:personalPhone;
+		set outref.wPhone = inref.emp:Address.emp:Phone.emp:workPhone;
+		set outref.Qualifcation = inref.emp:Qualifications.emp:QulifcationName;
+		set outref.year = inref.emp:Qualifications.emp:QualificatinYear;
+		propagate to terminal 0 ;
+		SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:soapenv=soapenv;
+		SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:emp=emp;
+		set OutputRoot.SOAP.Body.emp:AddemployessResponse.emp:Added=true;
+		set OutputRoot.SOAP.Body.emp:AddemployessResponse.emp:EmpoyeeId=randnum;
+		propagate to terminal 1 ;
+		
+		
+		
+		RETURN false;
+	END;
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE EmployeeFlow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:soapenv=soapenv;
+		SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:emp=emp;
+		declare employee row;
+		declare InRef Reference to InputRoot.DFDL.Emplyees;
+		create field OutputRoot.SOAP.Body.emp:GetEmployeeResponse;
+		declare outRef Reference to OutputRoot.SOAP.Body.emp:GetEmployeeResponse;
+	    set employee.result[] = select R from InRef.EmpDetails[] as R where R.EmpId =Environment.Variables.Input.*:GetEmployeeRequest.*:EmpoyeeId ;
+	     if (EXISTS(employee.result[])) then
+		set outRef.emp:EmpoyeeId = employee.result.EmpId;
+		set outRef.emp:FirstName = employee.result.Fname;
+		set outRef.emp:LastName = employee.result.Lname;
+		set outRef.emp:Age = employee.result.Age;
+		set outRef.emp:Address.emp:PostalCode = employee.result.postalCode;
+		set outRef.emp:Address.emp:"B.O_Box" = employee.result."B.O_Box";
+		set outRef.emp:Address.emp:street_name = employee.result.street;
+		set outRef.emp:Address.emp:BuildingNumber = employee.result.buildingNumber;
+		set outRef.emp:Address.emp:Phone.emp:personalPhone = employee.result.pPhone;
+		set outRef.emp:Address.emp:Phone.emp:workPhone = employee.result.wPhone;
+		set outRef.emp:Qualifications.emp:QulifcationName = employee.result.Qualifcation;
+		set outRef.emp:Qualifications.emp:QualificatinYear = employee.result.year;
+	    else
+	    	throw user exception MESSAGE 9999 VALUES('Employee Not Found');
+	    end if;
+	    
+		RETURN TRUE;
+	END;
+	
+END MODULE;
+
+

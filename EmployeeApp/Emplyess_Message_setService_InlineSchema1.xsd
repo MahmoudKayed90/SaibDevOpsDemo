@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tempuri.org/Emplyess_Message_set" xmlns="http://tempuri.org/Emplyess_Message_set" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:mrm="http://tempuri.org/Emplyess_Message_set" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/Emplyess_Message_set" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+      <xsd:complexType name="Phone">
+        <xsd:sequence>
+          <xsd:element ref="personalPhone"/>
+          <xsd:element ref="workPhone"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="personalPhone">
+      	<xsd:simpleType>
+      		<xsd:restriction base="xsd:string">
+      			<xsd:pattern value="(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})">
+      			</xsd:pattern>
+      		</xsd:restriction>
+      	</xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="workPhone" type="xsd:string"/>
+      <xsd:complexType name="Address">
+        <xsd:sequence>
+          <xsd:element ref="PostalCode"/>
+          <xsd:element ref="B.O_Box"/>
+          <xsd:element ref="street_name"/>
+          <xsd:element ref="BuildingNumber"/>
+          <xsd:element ref="Phone"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="street_name" type="xsd:string"/>
+      <xsd:element name="B.O_Box" type="xsd:int"/>
+      <xsd:element name="PostalCode" type="xsd:int"/>
+      <xsd:element name="BuildingNumber" type="xsd:int"/>
+      <xsd:element name="FirstName" type="xsd:string"/>
+      <xsd:element name="LastName" type="xsd:string"/>
+      <xsd:element name="Age" type="xsd:int"/>
+      <xsd:element name="QulifcationName">
+      	<xsd:simpleType>
+      		<xsd:restriction base="xsd:string">
+      			<xsd:enumeration value="Bachlor"/>
+      			<xsd:enumeration value="Master"/>
+      			<xsd:enumeration value="Doctorate"/>
+      		</xsd:restriction>
+      	</xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="QualificatinYear" type="xsd:int"/>
+      <xsd:complexType name="Qulaifications">
+        <xsd:sequence>
+          <xsd:element ref="QulifcationName"/>
+          <xsd:element ref="QualificatinYear"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AddEmployeeRequest">
+        <xsd:sequence>
+          <xsd:element ref="FirstName"/>
+          <xsd:element ref="LastName"/>
+          <xsd:element ref="Age"/>
+          <xsd:element ref="Address"/>
+          <xsd:element maxOccurs="10" ref="Qualifications"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="Phone" type="Phone"/>
+      <xsd:element name="Address" type="Address"/>
+      <xsd:element name="Qualifications" type="Qulaifications"/>
+      <xsd:element ibmSchExtn:docRoot="true" name="AddEmployeeRequest" type="AddEmployeeRequest"/>
+      <xsd:complexType name="AddemployessResponse">
+        <xsd:sequence>
+          <xsd:element ref="Added"/>
+          <xsd:element minOccurs="0" ref="EmpoyeeId"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="Added" type="xsd:boolean"/>
+      <xsd:element ibmSchExtn:docRoot="true" name="AddemployessResponse" type="AddemployessResponse"/>
+      <xsd:element name="faultcode" type="xsd:int"/>
+      <xsd:element name="FaultString" type="xsd:string"/>
+      <xsd:complexType name="Fault">
+        <xsd:sequence>
+          <xsd:element ref="faultcode"/>
+          <xsd:element ref="FaultString"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element ibmSchExtn:docRoot="true" name="Fault" type="Fault"/>
+      <xsd:element name="EmpoyeeId" type="xsd:string"/>
+      <xsd:complexType name="GetEmployeeRequest">
+        <xsd:sequence>
+          <xsd:element ref="EmpoyeeId"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="GetEmployeeResponse">
+        <xsd:sequence>
+          <xsd:element ref="EmpoyeeId"/>
+          <xsd:element ref="FirstName"/>
+          <xsd:element ref="LastName"/>
+          <xsd:element ref="Age"/>
+          <xsd:element ref="Address"/>
+          <xsd:element ref="Qualifications"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element ibmSchExtn:docRoot="true" name="GetEmployeeRequest" type="GetEmployeeRequest"/>
+      <xsd:element ibmSchExtn:docRoot="true" name="GetEmployeeResponse" type="GetEmployeeResponse"/>
+    
+
+      <xsd:complexType name="maa">
+      	<xsd:sequence>
+
+
+      		<xsd:element ref="Address"/>
+      		<xsd:element ref="Added"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="MahmoudKayed" type="maa"/>
+
+
+
+      <xsd:element name="ahmed" type="AddEmployeeRequest"/>
+
+    <xsd:element name="Nour">
+    	<xsd:complexType>
+    		<xsd:sequence>
+    			<xsd:element name="name" type="xsd:string"/>
+    			<xsd:element name="age" type="xsd:string"/>
+    			<xsd:element name="position" type="xsd:string"/>
+    			<xsd:element name="address">
+    				<xsd:complexType>
+    					<xsd:sequence>
+    						<xsd:element name="postal" type="xsd:string">
+    						</xsd:element>
+    						<xsd:element name="street" type="xsd:string">
+    						</xsd:element>
+    						<xsd:element name="city" type="xsd:string">
+    						</xsd:element>
+    						<xsd:element name="Phone">
+                                <xsd:complexType>
+                                	<xsd:sequence>
+                                		<xsd:element name="mobile" type="xsd:string">
+                                		</xsd:element>
+                                		<xsd:element name="work" type="xsd:string">
+                                		</xsd:element>
+                                	</xsd:sequence>
+                                </xsd:complexType>
+    						</xsd:element>
+    					</xsd:sequence>
+    				</xsd:complexType>
+        </xsd:element>
+    		</xsd:sequence>
+    	</xsd:complexType>
+  </xsd:element>
+    <xsd:element name="test">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="in" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+    <xsd:element name="testResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="out" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+    <xsd:element name="AccountTransactionResponse">
+    	<xsd:complexType>
+    		<xsd:sequence>
+    			<xsd:element name="AccountTransactionReply">
+    				<xsd:complexType>
+    					<xsd:sequence>
+    						<xsd:element name="id" type="xsd:string">
+    						</xsd:element>
+    						<xsd:element name="name"
+    							type="xsd:string">
+    						</xsd:element>
+    					</xsd:sequence>
+    				</xsd:complexType></xsd:element>
+    		</xsd:sequence>
+    	</xsd:complexType></xsd:element>
+</xsd:schema>

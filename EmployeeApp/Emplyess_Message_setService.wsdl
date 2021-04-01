@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Emplyess_Message_set" targetNamespace="http://tempuri.org/Emplyess_Message_set" xmlns="http://tempuri.org/Emplyess_Message_set" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://tempuri.org/Emplyess_Message_set" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="Emplyess_Message_setSOAP_HTTP_Binding" originalBindingStyle="document"/>
+        <generatedXSD location="Emplyess_Message_setService_InlineSchema1.xsd"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+    
+          <xsd:schema targetNamespace="http://tempuri.org/Emplyess_Message_set" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:mrm="http://tempuri.org/Emplyess_Message_set">
+<xsd:include schemaLocation="Emplyess_Message_setService_InlineSchema1.xsd"/>
+</xsd:schema>
+    </wsdl:types>
+  <wsdl:message name="GetEmployee_in">
+    <wsdl:part element="GetEmployeeRequest" name="GetEmployeeRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetEmployee_out">
+    <wsdl:part element="GetEmployeeResponse" name="GetEmployeeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetEmployee_fault1">
+    <wsdl:part element="Fault" name="Fault"/>
+  </wsdl:message>
+  <wsdl:message name="Addemployee_in">
+    <wsdl:part element="AddEmployeeRequest" name="AddEmployeeRequest"/>
+  </wsdl:message>
+  <wsdl:message name="Addemployee_out">
+    <wsdl:part element="AddemployessResponse" name="AddemployessResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Addemployee_fault1">
+    <wsdl:part element="Fault" name="Fault"/>
+  </wsdl:message>
+
+
+  <wsdl:message name="testRequest">
+  	<wsdl:part element="test" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="testResponse">
+  	<wsdl:part element="testResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="Emplyess_Message_setPortType">
+    <wsdl:operation name="GetEmployee">
+      <wsdl:input message="GetEmployee_in" name="GetEmployee_Input"/>
+      <wsdl:output message="GetEmployee_out" name="GetEmployee_Output"/>
+      <wsdl:fault message="GetEmployee_fault1" name="GetEmployee_Fault"/>
+    </wsdl:operation>
+    <wsdl:operation name="Addemployee">
+      <wsdl:input message="Addemployee_in" name="Addemployee_Input"/>
+      <wsdl:output message="Addemployee_out" name="Addemployee_Output"/>
+      <wsdl:fault message="Addemployee_fault1" name="Addemployee_Fault"/>
+    </wsdl:operation>
+
+
+    <wsdl:operation name="test">
+    	<wsdl:input message="testRequest"/>
+    	<wsdl:output message="testResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Emplyess_Message_setSOAP_HTTP_Binding" type="Emplyess_Message_setPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetEmployee">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="GetEmployee_Input">
+        <soap:body parts="GetEmployeeRequest" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetEmployee_Output">
+        <soap:body parts="GetEmployeeResponse" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="GetEmployee_Fault">
+        <soap:fault name="GetEmployee_Fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Addemployee">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="Addemployee_Input">
+        <soap:body parts="AddEmployeeRequest" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="Addemployee_Output">
+        <soap:body parts="AddemployessResponse" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Addemployee_Fault">
+        <soap:fault name="Addemployee_Fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EmplyessService">
+    <wsdl:port binding="Emplyess_Message_setSOAP_HTTP_Binding" name="Emplyess_SOAP_HTTP_Port">
+      <soap:address location="http://localhost:7800/EmplyessService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

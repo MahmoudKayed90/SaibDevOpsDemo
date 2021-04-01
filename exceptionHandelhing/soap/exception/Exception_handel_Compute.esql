@@ -1,0 +1,79 @@
+BROKER SCHEMA soap.exception
+
+DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE AceLog4jPath EXTERNAL CHARACTER '';
+
+CREATE COMPUTE MODULE Exception_handel_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		declare LastErrorNumber,LastText char;
+      IF(FIELDNAME(InputRoot.[<]) = 'SOAP') THEN
+          SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:soapenv=soapenv;
+          create field OutputRoot.SOAP.Body.soapenv:Fault;
+          declare outRef reference to OutputRoot.SOAP.Body.soapenv:Fault;
+          DECLARE start REFERENCE TO InputExceptionList.*[1];
+ 			WHILE start.Number IS NOT NULL DO 
+ 			   SET LastErrorNumber = start.Number;
+ 			   SET LastText = start.Text;
+               MOVE start LASTCHILD;
+			END WHILE;  
+			 set outRef.faultcode = LastErrorNumber;
+             set outRef.faultstring = LastText;       
+             set outRef.detail.ErrorDetails = start.Text;
+             propagate to terminal 0;
+             
+      ELSEIF(FIELDNAME(InputRoot.[<]) = 'XMLNSC') THEN   
+             propagate to terminal 1;     
+	END IF;
+	
+		RETURN false;
+	END;
+
+
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE Exception_log_4_j
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE rc BOOLEAN;
+		DECLARE applicationName CHAR ApplicationLabel;
+		DECLARE flowName CHAR MessageFlowLabel;
+		DECLARE exceptionBlob BLOB;
+		IF EXISTS(InputExceptionList.*[]) THEN
+			-- Define a XML parser element to be used to serialize the ExceptionList into bitstream
+			Create LASTCHILD OF OutputLocalEnvironment.Variables DOMAIN('XMLNSC') Name 'XMLNSC';
+			SET OutputLocalEnvironment.Variables.XMLNSC.ExceptionList = InputExceptionList;
+			SET exceptionBlob = ASBITSTREAM(OutputLocalEnvironment.Variables.XMLNSC.ExceptionList);
+		ELSE
+			SET exceptionBlob = ASBITSTREAM(InputRoot);
+		END IF;
+
+		DECLARE fullException CHAR CAST(exceptionBlob AS CHAR CCSID 1208);
+		DECLARE inputMessage CHAR CAST(ASBITSTREAM(InputBody) AS CHAR CCSID 1208);
+		CALL initLog4j(AceLog4jPath) INTO rc;
+		CALL log4j_1_1(flowName, applicationName, 'ERROR', ' -------------Exception-------------') INTO rc;
+		CALL log4j_1_1(flowName, applicationName, 'INFO', inputMessage) INTO rc;
+		CALL log4j_1_1(flowName, applicationName, 'ERROR', fullException) INTO rc;
+		RETURN true;
+	END;
+
+
+CREATE FUNCTION initLog4j(INCONFIG_FILE_NAME CHARACTER) RETURNS BOOLEAN
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.initLog4j";
+
+	CREATE FUNCTION log4j(INCOMPONENT_NAME CHARACTER,INLEVEL CHARACTER,INTEXT CHARACTER) RETURNS BOOLEAN
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";
+
+	CREATE FUNCTION log4j_1_1(IN COMPONENT_NAME CHARACTER,
+	IN LOGGER_NAME CHARACTER,
+	IN LEVEL CHARACTER,
+	IN TEXT CHARACTER)
+	RETURNS BOOLEAN
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.ibm.broker.IAM3.Log4jNode.log";	
+END MODULE;
+

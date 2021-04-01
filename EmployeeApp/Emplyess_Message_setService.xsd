@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tempuri.org/Emplyess_Message_set" xmlns:tns="http://tempuri.org/Emplyess_Message_set">
+  <xsd:include schemaLocation="Emplyess_Message_setService_InlineSchema1.xsd"/>
+
+<!-- BEGIN Global group petaining to all wsdl:message definitions -->
+<!-- END Global group -->
+
+
+<!-- BEGIN Message Definitions for the wsdl:operations  -->
+<!-- END Message Definitions -->
+
+
+</xsd:schema>

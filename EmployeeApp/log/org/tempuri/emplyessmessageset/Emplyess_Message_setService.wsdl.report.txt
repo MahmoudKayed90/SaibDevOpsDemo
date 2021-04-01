@@ -1,0 +1,32 @@
+
+
+Importing file: D:\Work\IIB\framework\Framework-Repo\trunk\EmployeeApp\Emplyess_Message_setService.wsdl
+
+
+The following is a list of WS-I warning messages found when importing:
+WS-I BP 1.1: (BP2118) The binding does not have the same list of operations as the Emplyess_Message_setPortType port type to which it refers., Line: 77, Column: 3
+
+
+The WSDL import will proceed with bindings Emplyess_Message_setSOAP_HTTP_Binding.
+Creating wsdl schema document for file:///D:/Work/IIB/framework/Framework-Repo/trunk/EmployeeApp/Emplyess_Message_setService.wsdl.
+Parsing wsdl binding {http://tempuri.org/Emplyess_Message_set}Emplyess_Message_setSOAP_HTTP_Binding.
+Parsing wsdl binding input GetEmployee.
+Parsing wsdl binding output GetEmployee.
+Parsing wsdl binding fault GetEmployee_Fault.
+Parsing wsdl binding input Addemployee.
+Parsing wsdl binding output Addemployee.
+Parsing wsdl binding fault Addemployee_Fault.
+Processing doc style for operation GetEmployee.
+Processing doc style for operation Addemployee.
+Populating WSDL schema Emplyess_Message_setService.xsd.
+Creating file Emplyess_Message_setService.xsd in the workspace.
+Creating file Emplyess_Message_setService_InlineSchema1.xsd in the workspace.
+Copying source WSDL Emplyess_Message_setService.wsdl to Emplyess_Message_setService.wsdl.
+
+Elapsed time processing this message definition file: 0.182 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

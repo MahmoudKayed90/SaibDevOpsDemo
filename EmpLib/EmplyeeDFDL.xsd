@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="Emplyees">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:occursCountKind="implicit" dfdl:terminator="%CR;%LF;%WSP*;" maxOccurs="unbounded" name="EmpDetails">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separatorSuppressionPolicy="trailingEmpty">
+							<xsd:element default="DDD" ibmDfdlExtn:sampleValue="value1" name="EmpId" type="xsd:string"/>
+							<xsd:element default="xsaxs" ibmDfdlExtn:sampleValue="value2" name="Fname" type="xsd:string"/>
+							<xsd:element default="dxsdxs" ibmDfdlExtn:sampleValue="value3" name="Lname" type="xsd:string"/>
+                            <xsd:element default="12" dfdl:textNumberPattern="#0" name="Age" type="xsd:int"/>
+                            <xsd:element default="243" dfdl:textNumberPattern="#0" name="postalCode" type="xsd:int"/>
+                            <xsd:element default="232" dfdl:textNumberPattern="#0" name="B.O_Box" type="xsd:int"/>
+                            <xsd:element default="3435" ibmDfdlExtn:sampleValue="value7" name="street" type="xsd:string"/>
+                            <xsd:element default="242" dfdl:textNumberPattern="#0" name="buildingNumber" type="xsd:int"/>
+                            <xsd:element default="+966540876553" ibmDfdlExtn:sampleValue="value9" name="pPhone" type="xsd:string"/>
+                            <xsd:element default="011234567" ibmDfdlExtn:sampleValue="value10" name="wPhone" type="xsd:string"/>
+                            <xsd:element default="Bachlor" ibmDfdlExtn:sampleValue="value11" name="Qualifcation" type="xsd:string"/>
+                            <xsd:element default="2012" dfdl:textNumberPattern="#0" name="year" type="xsd:int"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>
